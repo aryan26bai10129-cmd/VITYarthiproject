@@ -1,0 +1,198 @@
+"""
+Attendance Risk Calculator
+
+Author: Aryan Srivastava
+Registration Number: 26BAI10129
+
+This program calculates attendance percentage and
+classifies attendance into Low, Medium, or High Risk.
+"""
+
+
+def calculate_attendance(total_classes, attended_classes):
+    """
+    Calculate attendance percentage, risk level,
+    and recommendation.
+
+    Args:
+        total_classes (int): Total number of classes conducted.
+        attended_classes (int): Number of classes attended.
+
+    Returns:
+        tuple: (percentage, risk_level, recommendation)
+
+    Raises:
+        ValueError: If the input values are invalid.
+    """
+
+    if total_classes <= 0:
+        raise ValueError("Total classes must be greater than zero.")
+
+    if attended_classes < 0:
+        raise ValueError("Attended classes cannot be negative.")
+
+    if attended_classes > total_classes:
+        raise ValueError(
+            "Attended classes cannot be greater than total classes."
+        )
+
+    percentage = (attended_classes / total_classes) * 100
+
+    if percentage >= 75:
+        risk_level = "Low Risk"
+        recommendation = "Attendance is satisfactory."
+
+    elif percentage >= 60:
+        risk_level = "Medium Risk"
+        recommendation = "Attendance needs improvement."
+
+    else:
+        risk_level = "High Risk"
+        recommendation = (
+            "Immediate attendance improvement is recommended."
+        )
+
+    return percentage, risk_level, recommendation
+
+
+def main():
+    """Run the Attendance Risk Calculator."""
+
+    print("=" * 40)
+    print("       ATTENDANCE RISK CALCULATOR")
+    print("=" * 40)
+
+    try:
+        total_classes = int(
+            input("Enter total classes conducted: ")
+        )
+
+        attended_classes = int(
+            input("Enter classes attended: ")
+        )
+
+        percentage, risk_level, recommendation = calculate_attendance(
+            total_classes,
+            attended_classes
+        )
+
+        print("\n" + "-" * 40)
+        print(f"Attendance Percentage: {percentage:.2f}%")
+        print(f"Risk Level: {risk_level}")
+        print(f"Recommendation: {recommendation}")
+        print("-" * 40)
+
+    except ValueError as error:
+        print(f"\nError: {error}")
+
+
+if __name__ == "__main__":
+    main()
+import unittest
+
+from main import calculate_attendance
+
+
+class TestAttendanceRiskCalculator(unittest.TestCase):
+
+    def test_low_risk(self):
+        percentage, risk, recommendation = calculate_attendance(
+            100, 80
+        )
+
+        self.assertEqual(percentage, 80.0)
+        self.assertEqual(risk, "Low Risk")
+        self.assertEqual(
+            recommendation,
+            "Attendance is satisfactory."
+        )
+
+    def test_medium_risk(self):
+        percentage, risk, recommendation = calculate_attendance(
+            100, 70
+        )
+
+        self.assertEqual(percentage, 70.0)
+        self.assertEqual(risk, "Medium Risk")
+        self.assertEqual(
+            recommendation,
+            "Attendance needs improvement."
+        )
+
+    def test_high_risk(self):
+        percentage, risk, recommendation = calculate_attendance(
+            100, 50
+        )
+
+        self.assertEqual(percentage, 50.0)
+        self.assertEqual(risk, "High Risk")
+        self.assertEqual(
+            recommendation,
+            "Immediate attendance improvement is recommended."
+        )
+
+    def test_exactly_75_percent(self):
+        percentage, risk, recommendation = calculate_attendance(
+            100, 75
+        )
+
+        self.assertEqual(percentage, 75.0)
+        self.assertEqual(risk, "Low Risk")
+
+    def test_exactly_60_percent(self):
+        percentage, risk, recommendation = calculate_attendance(
+            100, 60
+        )
+
+        self.assertEqual(percentage, 60.0)
+        self.assertEqual(risk, "Medium Risk")
+
+    def test_zero_total_classes(self):
+        with self.assertRaises(ValueError):
+            calculate_attendance(0, 0)
+
+    def test_negative_attended_classes(self):
+        with self.assertRaises(ValueError):
+            calculate_attendance(100, -1)
+
+    def test_attended_greater_than_total(self):
+        with self.assertRaises(ValueError):
+            calculate_attendance(50, 60)
+
+
+if __name__ == "__main__":
+    unittest.main()
+# Attendance Risk Calculator
+
+## Project Overview
+
+The Attendance Risk Calculator is a Python-based application that calculates a student's attendance percentage and determines the corresponding attendance risk level.
+
+The application accepts the total number of classes conducted and the number of classes attended. It then calculates the attendance percentage and provides a risk classification and recommendation.
+
+## Features
+
+- Calculates attendance percentage.
+- Identifies attendance risk level.
+- Provides attendance recommendations.
+- Validates user input.
+- Handles invalid attendance values.
+- Includes automated unit tests.
+- Uses only Python standard libraries.
+
+## Risk Classification
+
+| Attendance | Risk Level |
+|------------|------------|
+| 75% or above | Low Risk |
+| 60% – 74.99% | Medium Risk |
+| Below 60% | High Risk |
+
+## Project Structure
+
+```text
+Attendance-Risk-Calculator/
+│
+├── main.py
+├── test_main.py
+└── README.md
